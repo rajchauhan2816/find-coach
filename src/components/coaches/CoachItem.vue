@@ -3,26 +3,33 @@
     <h3>{{ fullName }}</h3>
     <h4>${{ rate }}/hour</h4>
     <div>
-      <span v-for="area in areas" :key="area">{{ area }}</span>
+      <BaseBadge
+        v-for="area in areas"
+        :key="area"
+        :type="area"
+        :title="area"
+      ></BaseBadge>
     </div>
     <div class="actions">
-      <router-link :to="coachContactLink">Cotact</router-link>
-      <router-link :to="coachDetailLink">View Details</router-link>
+      <BaseButton mode="outline" link :to="coachContactLink"
+        >Contact</BaseButton
+      >
+      <BaseButton link :to="coachDetailLink">View Details</BaseButton>
     </div>
   </li>
 </template>
 
 <script lang="ts">
-import { computed } from 'vue'
-import { useRoute } from 'vue-router'
-import { defineComponent } from 'vue'
+import { computed } from "vue";
+import { useRoute } from "vue-router";
+import { defineComponent } from "vue";
 export default defineComponent({
   props: {
     id: String,
     firstName: String,
     lastName: String,
     rate: Number,
-    areas: Array
+    areas: Array,
   },
   // computed: {
   //   fullName() {
@@ -30,17 +37,17 @@ export default defineComponent({
   //   }
   // },
   setup(props) {
-    const route = useRoute()
+    const route = useRoute();
     const fullName = computed<string>(
       () => `${props.firstName} ${props.lastName}`
-    )
+    );
     const coachContactLink = computed<string>(
       () => `${route.path}/${props.id}/contact/`
-    )
-    const coachDetailLink = computed<string>(() => `${route.path}/${props.id}`)
-    return { fullName, coachContactLink, coachDetailLink }
-  }
-})
+    );
+    const coachDetailLink = computed<string>(() => `${route.path}/${props.id}`);
+    return { fullName, coachContactLink, coachDetailLink };
+  },
+});
 </script>
 
 <style scoped>

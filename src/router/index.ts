@@ -1,41 +1,42 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router"
-import CoachDetail from "../views/coaches/CoachDetail.vue"
-import CoachesList from "../views/coaches/CoachesList.vue"
-import CoachRegistration from "../views/coaches/CoachRegistration.vue"
-import ContactCoach from "../views/requests/ContactCoach.vue"
-import RequestReceived from "../views/requests/RequestReceived.vue"
-import NotFound from "../views/NotFound.vue"
+import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import CoachDetail from "../views/coaches/CoachDetail.vue";
+import CoachesList from "../views/coaches/CoachesList.vue";
+import CoachRegistration from "../views/coaches/CoachRegistration.vue";
+import ContactCoach from "../views/requests/ContactCoach.vue";
+import RequestReceived from "../views/requests/RequestReceived.vue";
+import NotFound from "../views/NotFound.vue";
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    redirect: "/coaches"
+    redirect: "/coaches",
   },
   {
     path: "/coaches",
-    component: CoachesList
+    component: CoachesList,
   },
   {
     path: "/coaches/:id",
     component: CoachDetail,
+    props: true,
     children: [
       {
         path: "contact",
-        component: ContactCoach
-      }
-    ]
+        component: ContactCoach,
+      },
+    ],
   },
   {
     path: "/register",
-    component: CoachRegistration
+    component: CoachRegistration,
   },
   {
     path: "/requests",
-    component: RequestReceived
+    component: RequestReceived,
   },
   {
     path: "/:notFound(.*)",
-    component: NotFound
-  }
+    component: NotFound,
+  },
   // {
   //   path: "/about",
   //   name: "About",
@@ -45,11 +46,11 @@ const routes: Array<RouteRecordRaw> = [
   //   component: () =>
   //     import(/* webpackChunkName: "about" */ "../views/About.vue")
   // }
-]
+];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;
