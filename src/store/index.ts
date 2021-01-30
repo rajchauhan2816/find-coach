@@ -1,9 +1,11 @@
-import { createStore } from "vuex"
-import coachesModule from "./modules/coaches/index"
+import { createStore } from "vuex";
+import { coaches } from "./modules/coaches/index";
 
-export default createStore({
-  modules: { coaches: coachesModule },
+export interface RootState {}
+
+export default createStore<RootState>({
+  modules: { coaches },
   state: {},
   mutations: {},
-  actions: {}
-})
+  actions: {},
+});

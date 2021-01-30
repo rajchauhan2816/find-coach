@@ -30,15 +30,16 @@
 import { ICoach } from "@/store/modules/coaches/types";
 import { useStore } from "vuex";
 import { computed, onBeforeMount } from "vue";
-import { useRoute } from "vue-router";
-
-export default {
+import { useRoute, useRouter } from "vue-router";
+import { defineComponent } from "vue";
+export default defineComponent({
   props: {
     id: String,
   },
   setup(props) {
     const store = useStore();
     const route = useRoute();
+    const router = useRouter();
     let selectedCoach: ICoach;
     onBeforeMount(() => {
       selectedCoach = store.getters["coaches/coaches"].find(
@@ -56,5 +57,5 @@ export default {
     const description = computed<String>(() => selectedCoach.description);
     return { fullName, coachContactLink, areas, rate, description };
   },
-};
+});
 </script>

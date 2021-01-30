@@ -1,10 +1,15 @@
-import { ICoach } from "./types"
+import { RootState } from "./../../index";
+import { CoachState } from "./types";
+import { GetterTree } from "vuex";
 
-export default {
-  coaches(state: { coaches: ICoach[] }) {
-    return state.coaches
+export const getters: GetterTree<CoachState, RootState> = {
+  coaches(state) {
+    return state.coaches;
   },
-  hasCoaches(state: { coaches: ICoach[] }) {
-    return state.coaches?.length > 0
-  }
-}
+  hasCoaches(state) {
+    return state.coaches?.length > 0;
+  },
+  isLoading(state) {
+    return state.loading;
+  },
+};

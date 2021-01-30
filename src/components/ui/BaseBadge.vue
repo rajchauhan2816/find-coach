@@ -4,14 +4,15 @@
 
 <script lang="ts">
 import { computed } from "vue";
-export default {
-  props: { title: String, type: String },
+import { defineComponent } from "vue";
+export default defineComponent({
+  props: { title: { type: String, required: true }, type: String },
   setup(props) {
-    const text = computed<string>(() => `${props.title?.toUpperCase()}`);
+    const text = computed<string>(() => `${props.title.toUpperCase()}`);
     // const text2 = computed<string>(() => props.title?.toUpperCase() ?? "");
     return { text };
   },
-};
+});
 </script>
 
 <style scoped>
