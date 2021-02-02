@@ -6,7 +6,9 @@
     <BaseCard>
       <div class="controls">
         <BaseButton mode="outline">Refresh</BaseButton>
-        <BaseButton link to="/register">Register as Coach</BaseButton>
+        <BaseButton v-if="!isCoach" link to="/register"
+          >Register as Coach</BaseButton
+        >
       </div>
       <ul v-if="hasCoaches">
         <CoachItem
@@ -73,7 +75,9 @@ export default {
       activeFilters.career = updatedFilters.career;
     }
 
-    return { filteredCoaches, hasCoaches, setFilters };
+    const isCoach = computed<boolean>(() => store.getters["coaches/isCoach"]);
+
+    return { filteredCoaches, hasCoaches, setFilters, isCoach };
   },
 };
 </script>

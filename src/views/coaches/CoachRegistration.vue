@@ -31,7 +31,6 @@ export default {
     const isLoading = computed<boolean>(
       () => store.getters["coaches/isLoading"]
     );
-
     async function saveData(data: IData) {
       const result: boolean = await store.dispatch(
         "coaches/registerCoach",
@@ -39,6 +38,7 @@ export default {
       );
       if (result) router.replace("/coaches");
     }
+
     return { saveData, isLoading };
   },
 };

@@ -11,9 +11,9 @@ interface IFormData {
 }
 
 export const actions: ActionTree<CoachState, RootState> = {
-  registerCoach({ commit }, data: IFormData) {
+  registerCoach({ commit, rootGetters }, data: IFormData) {
     const coachData = {
-      id: "c3",
+      id: rootGetters.userId,
       firstName: data.first,
       lastName: data.last,
       description: data.desc,

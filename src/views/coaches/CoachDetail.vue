@@ -9,7 +9,10 @@
     <BaseCard>
       <header>
         <h2>Interested? Reach Out Now</h2>
-        <BaseButton link :to="contactLink">Contact</BaseButton>
+        <BaseButton link :to="coachContactLink">Contact</BaseButton>
+        <div>
+          <router-view></router-view>
+        </div>
       </header>
     </BaseCard>
   </section>
@@ -49,9 +52,7 @@ export default defineComponent({
     const fullName = computed<string>(
       () => `${selectedCoach.firstName} ${selectedCoach.lastName}`
     );
-    const coachContactLink = computed<string>(
-      () => `${route.path}/${props.id}/contact/`
-    );
+    const coachContactLink = computed<string>(() => `${route.path}/contact/`);
     const areas = computed<Array<String>>(() => selectedCoach.areas);
     const rate = computed<Number>(() => selectedCoach.hourlyRate);
     const description = computed<String>(() => selectedCoach.description);
