@@ -35,7 +35,6 @@ export default defineComponent({
     const hasRequests = computed<boolean>(() => {
       return store.getters["requests/hasRequests"];
     });
-
     return { receivedRequests, hasRequests };
   },
 });
