@@ -19,7 +19,7 @@ export class AuthService {
   }
 
   async login(user: any) {
-    const payload = { email: user.email };
+    const payload = { username: user.email };
     return this._generateTokens(payload);
   }
 
@@ -33,7 +33,7 @@ export class AuthService {
       email: payload.email,
       access_token: this.jwtService.sign(payload),
       refresh_token: this.jwtService.sign(payload, {
-        expiresIn: '30d',
+        expiresIn: '1h',
       }),
       iat: Date.now(),
       exp: Date.now() + 60 * 60 * 1000,

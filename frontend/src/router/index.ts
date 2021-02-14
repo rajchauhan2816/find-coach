@@ -5,6 +5,8 @@ import CoachRegistration from "../views/coaches/CoachRegistration.vue";
 import ContactCoach from "../views/requests/ContactCoach.vue";
 import RequestReceived from "../views/requests/RequestReceived.vue";
 import NotFound from "../views/NotFound.vue";
+import LogIn from "../views/Auth/LogIn.vue";
+import SignUp from "../views/Auth/SignUp.vue";
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
@@ -28,6 +30,14 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/register",
     component: CoachRegistration,
+  },
+  {
+    path: "/auth/login",
+    component: LogIn,
+  },
+  {
+    path: "/auth/signup",
+    component: SignUp,
   },
   {
     path: "/requests",

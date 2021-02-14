@@ -1,3 +1,5 @@
+import { ICurrentUser } from './../auth/currentuser';
+import { JwtAuthGuard } from './../auth/jwt-auth.guard';
 import {
   Controller,
   Get,
@@ -10,14 +12,17 @@ import {
 import { CoachesService } from './coaches.service';
 import { CreateCoachDto } from './dto/create-coach.dto';
 import { UpdateCoachDto } from './dto/update-coach.dto';
+import { UseGuards } from '@nestjs/common';
+import { User } from 'src/auth/user.decorator';
 
 @Controller('coaches')
 export class CoachesController {
   constructor(private readonly coachesService: CoachesService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() createCoachDto: CreateCoachDto) {
-    return this.coachesService.create(createCoachDto);
+  create(@User() user: ICurrentUser, @Body() createCoachDto: CreateCoachDto) {
+    return this.coachesService.create(user, createCoachDto);
   }
 
   @Get()

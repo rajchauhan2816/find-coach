@@ -24,10 +24,9 @@ import { userSchema } from 'src/users/schemas/user.schema';
       imports: [ConfigModule],
       inject: [ConfigService],
     }),
-    MongooseModule.forFeature([{ name: 'user', schema: userSchema }]),
   ],
   controllers: [AuthController],
-  providers: [AuthService, UsersService, LocalStrategy, JwtStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy],
   exports: [AuthService],
 })
 export class AuthModule {}
