@@ -9,7 +9,9 @@
     <BaseCard>
       <header>
         <h2>Interested? Reach Out Now</h2>
-        <BaseButton link :to="coachContactLink">Contact</BaseButton>
+        <BaseButton link :to="coachContactLink" v-if="iscontact"
+          >Contact</BaseButton
+        >
         <div>
           <router-view></router-view>
         </div>
@@ -32,7 +34,7 @@
 <script lang="ts">
 import { ICoach } from "@/store/modules/coaches/types";
 import { useStore } from "vuex";
-import { computed, onBeforeMount } from "vue";
+import { computed, onBeforeMount, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { defineComponent } from "vue";
 export default defineComponent({
@@ -43,20 +45,38 @@ export default defineComponent({
     const store = useStore();
     const route = useRoute();
     const router = useRouter();
+
     let selectedCoach: ICoach;
     onBeforeMount(() => {
-      selectedCoach = store.getters["coaches/coaches"].find(
-        (coach: ICoach) => coach.id === props.id
+      selectedCoach = store.getters["coaches/coaches"]?.find(
+        (coach: ICoach) => coach._id === props.id
       );
+      if(!selectedCoach){
+        store.dispatch("")
+      }
     });
     const fullName = computed<string>(
-      () => `${selectedCoach.firstName} ${selectedCoach.lastName}`
+      () => `${selectedCoach.user.firstName} ${selectedCoach.user.lastName}`
     );
     const coachContactLink = computed<string>(() => `${route.path}/contact/`);
     const areas = computed<Array<String>>(() => selectedCoach.areas);
     const rate = computed<Number>(() => selectedCoach.hourlyRate);
     const description = computed<String>(() => selectedCoach.description);
-    return { fullName, coachContactLink, areas, rate, description };
+    let iscontact = computed<Boolean>(() => {
+      if (route.path.includes("contact")) {
+        return false;
+      }
+      return true;
+    });
+    return {
+      fullName,
+      coachContactLink,
+      areas,
+      rate,
+      description,
+      iscontact,
+      route,
+    };
   },
 });
 </script>

@@ -12,7 +12,7 @@ export class CoachesService {
   constructor(
     private usersService: UsersService,
     @InjectModel('coach') private coachModel: Model<Coach>,
-  ) {}
+  ) { }
   async create({ email }: { email: string }, createCoachDto: CreateCoachDto) {
     try {
       const user = await this.usersService.findOne(email);
@@ -29,7 +29,11 @@ export class CoachesService {
 
   async findAll() {
     const coaches = await this.coachModel.find();
-    return coaches;
+    return coaches.map((c) => {
+      const coach = c.toObject();
+      delete coach.user.password;
+      return coach;
+    });
   }
 
   findOne(id: string) {

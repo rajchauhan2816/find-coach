@@ -5,7 +5,7 @@
   <section>
     <BaseCard>
       <div class="controls">
-        <BaseButton mode="outline">Refresh</BaseButton>
+        <BaseButton mode="outline" @click="fetchCoaches">Refresh</BaseButton>
         <BaseButton v-if="!isCoach" link to="/register"
           >Register as Coach</BaseButton
         >
@@ -13,10 +13,10 @@
       <ul v-if="hasCoaches">
         <CoachItem
           v-for="coach in filteredCoaches"
-          :key="coach.id"
-          :id="coach.id"
-          :first-Name="coach.firstName"
-          :last-Name="coach.lastName"
+          :key="coach._id"
+          :id="coach._id"
+          :first-Name="coach.user.firstName"
+          :last-Name="coach.user.lastName"
           :rate="coach.hourlyRate"
           :areas="coach.areas"
         />
@@ -31,14 +31,14 @@ import { ICoach } from "@/store/modules/coaches/types";
 import { useStore } from "vuex";
 import CoachItem from "@/components/coaches/CoachItem.vue";
 import CoachFilter from "@/components/coaches/CoachFilter.vue";
-import { computed, reactive } from "vue";
+import { computed, defineComponent, reactive } from "vue";
 interface filter {
   frontend: true;
   backend: true;
   career: true;
 }
 
-export default {
+export default defineComponent({
   components: {
     CoachItem,
     CoachFilter,
@@ -77,9 +77,18 @@ export default {
 
     const isCoach = computed<boolean>(() => store.getters["coaches/isCoach"]);
 
-    return { filteredCoaches, hasCoaches, setFilters, isCoach };
+    function fetchCoaches() {
+      store.dispatch("coaches/FETCH_COACHES");
+      store.dispatch("coaches/FETCH_ME");
+    }
+
+    return { filteredCoaches, hasCoaches, setFilters, isCoach, fetchCoaches };
   },
-};
+  beforeMount() {
+    const store = useStore();
+    store.dispatch("coaches/FETCH_COACHES");
+  },
+});
 </script>
 
 <style scoped>

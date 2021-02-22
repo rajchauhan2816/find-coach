@@ -20,7 +20,7 @@ import { RequestsModule } from './requests/requests.module';
         sslValidate: false,
         connectionFactory: (connection) => {
           // eslint-disable-next-line @typescript-eslint/no-var-requires
-          // connection.plugin(require('mongoose-autopopulate'));
+          connection.plugin(require('mongoose-autopopulate'));
           return connection;
         },
       }),

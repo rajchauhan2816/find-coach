@@ -1,3 +1,4 @@
+import { state } from './../requests/index';
 import { RootState } from "./../../index";
 import { CoachState, ICoach } from "./types";
 import { GetterTree } from "vuex";
@@ -6,15 +7,16 @@ export const getters: GetterTree<CoachState, RootState> = {
   coaches(state) {
     return state.coaches;
   },
+  loggedUser(state) {
+    return state.loggedIn;
+  },
   hasCoaches(state) {
     return state.coaches?.length > 0;
   },
   isLoading(state) {
     return state.loading;
   },
-  isCoach(_, getters, _2, rootGetters) {
-    const coaches = getters.coaches;
-    const userId = rootGetters.userId;
-    return coaches.some((coach: ICoach) => coach.id === userId);
+  isCoach(state) {
+    return state.loggedIn?.role === "coach";
   },
 };

@@ -18,6 +18,7 @@
 </template>
 
 <script lang="ts">
+import store from "@/store";
 import { defineComponent } from "vue";
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
@@ -31,7 +32,8 @@ export default defineComponent({
     const store = useStore();
     const route = useRoute();
     const router = useRouter();
-
+    const user = store.getters["coaches/loggedUser"];
+    console.log(user);
     function submitForm() {
       formIsValid.value = true;
       if (
@@ -51,7 +53,11 @@ export default defineComponent({
       // console.log(store.getters["requests/requests"]);
       router.replace("/coaches");
     }
-    return { email, message, submitForm, formIsValid };
+    return { email, message, submitForm, formIsValid, user };
+  },
+  beforeRouteEnter() {
+    const user = store.getters["coaches/loggedUser"];
+    console.log(user);
   },
 });
 </script>

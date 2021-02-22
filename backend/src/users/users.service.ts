@@ -9,7 +9,7 @@ import { Role } from './schemas/role.enum';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel('user') private userModel: Model<User>) {}
+  constructor(@InjectModel('user') private userModel: Model<User>) { }
   async create(createUserDto: CreateUserDto) {
     const { password, ...res } = createUserDto;
     const ecryptPass = await hash(password, 12);
@@ -49,5 +49,9 @@ export class UsersService {
     return this.userModel.findByIdAndUpdate(id, {
       role: Role.Coach,
     });
+  }
+
+  findMe({ email }: { email: string }) {
+    return this.userModel.findOne({ email });
   }
 }

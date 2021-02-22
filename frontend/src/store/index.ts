@@ -1,3 +1,4 @@
+import { auth } from "./modules/auth/index";
 import { createStore } from "vuex";
 import { coaches } from "./modules/coaches/index";
 import { requests } from "./modules/requests/index";
@@ -7,7 +8,7 @@ export interface RootState {
 }
 
 export default createStore<RootState>({
-  modules: { coaches, requests },
+  modules: { coaches, requests, auth },
   state() {
     return {
       userId: "c3",

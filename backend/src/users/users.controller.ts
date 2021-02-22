@@ -1,3 +1,4 @@
+import { JwtAuthGuard } from './../auth/jwt-auth.guard';
 import {
   Controller,
   Get,
@@ -6,14 +7,17 @@ import {
   Put,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ICurrentUser } from './../auth/currentuser';
+import { User } from 'src/auth/user.decorator';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) { }
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
@@ -23,6 +27,13 @@ export class UsersController {
   @Get()
   findAll() {
     return this.usersService.findAll();
+  }
+  @UseGuards(JwtAuthGuard)
+  @Get('/me')
+  async findMe(@User() user: ICurrentUser) {
+    const res = await this.usersService.findMe(user);
+    const { password, ...me } = res.toObject();
+    return me;
   }
 
   @Get(':email')

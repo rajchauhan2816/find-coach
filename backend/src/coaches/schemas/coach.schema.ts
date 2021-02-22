@@ -4,7 +4,12 @@ import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 
 @Schema()
 export class Coach extends Document {
-  @Prop({ required: true, type: Types.ObjectId })
+  @Prop({
+    required: true,
+    type: Types.ObjectId,
+    ref: 'user',
+    autopopulate: true,
+  })
   user: User;
 
   @Prop({ required: true })
