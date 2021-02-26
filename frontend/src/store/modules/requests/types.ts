@@ -1,8 +1,8 @@
 export interface IRequest {
-  id: string;
-  coachId: string;
-  userEmail: string;
+  _id: string;
+  from: string;
   message: string;
+  to: string;
 }
 
 export interface RequestState {

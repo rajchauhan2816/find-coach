@@ -10,7 +10,7 @@ import SignUp from "../views/Auth/SignUp.vue";
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    redirect: "/coaches",
+    redirect: "/auth/login",
   },
   {
     path: "/coaches",

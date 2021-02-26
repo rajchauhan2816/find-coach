@@ -11,7 +11,7 @@ export class RequestsService {
   constructor(
     private usersService: UsersService,
     @InjectModel('request') private requestModel: Model<Request>,
-  ) {}
+  ) { }
   async create(
     { email }: { email: string },
     createRequestDto: CreateRequestDto,
@@ -19,7 +19,7 @@ export class RequestsService {
     const user = await this.usersService.findOne(email);
     const req = {
       from: user._id,
-      to: Types.ObjectId(createRequestDto.coachId),
+      to: Types.ObjectId(createRequestDto.coachUserId),
       message: createRequestDto.text,
       createdAt: new Date().toISOString(),
     };

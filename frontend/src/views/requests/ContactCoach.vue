@@ -1,8 +1,8 @@
 <template>
   <form @submit.prevent="submitForm">
     <div class="form-control">
-      <label for="email">Your Email</label>
-      <input type="email" id="email" v-model.trim="email" />
+      <h2>{{ user.firstName }} {{ user.lastName }}</h2>
+      <h3>{{ user.email }}</h3>
     </div>
     <div class="form-control">
       <label for="message">Message</label>
@@ -18,14 +18,12 @@
 </template>
 
 <script lang="ts">
-import store from "@/store";
 import { defineComponent } from "vue";
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 export default defineComponent({
   setup() {
-    let email = ref("");
     let message = ref("");
     let formIsValid = ref(true);
 
@@ -33,31 +31,21 @@ export default defineComponent({
     const route = useRoute();
     const router = useRouter();
     const user = store.getters["coaches/loggedUser"];
-    console.log(user);
     function submitForm() {
       formIsValid.value = true;
-      if (
-        email.value === "" ||
-        !email.value.includes("@") ||
-        message.value === ""
-      ) {
+      if (message.value === "") {
         formIsValid.value = false;
         return;
       }
       // Add requests
       store.dispatch("requests/contactCoach", {
-        email: email.value,
         message: message.value,
         coachId: route.params.id,
       });
       // console.log(store.getters["requests/requests"]);
       router.replace("/coaches");
     }
-    return { email, message, submitForm, formIsValid, user };
-  },
-  beforeRouteEnter() {
-    const user = store.getters["coaches/loggedUser"];
-    console.log(user);
+    return { message, submitForm, formIsValid, user };
   },
 });
 </script>
@@ -65,6 +53,12 @@ export default defineComponent({
 <style scoped>
 .form-control {
   margin: 0.5rem 0;
+}
+
+h2,
+h3 {
+  color: rgb(44, 177, 163);
+  margin: 0;
 }
 
 label {

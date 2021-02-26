@@ -25,6 +25,15 @@ export const actions: ActionTree<CoachState, RootState> = {
       commit("FETCH_COACHES", response.data);
     });
   },
+  async FETCH_COACH({ state }, id: string) {
+    let coach = state.coaches.find(coach => coach._id === id);
+    if (!coach) {
+      return axios.get(`http://localhost:3000/coaches/${id}`).then((response) => {
+        return response.data;
+      });
+    }
+    return coach;
+  },
   registerCoach({ commit, rootGetters }, data: any) {
     const coachData = {
       id: rootGetters.userId,
@@ -45,7 +54,6 @@ export const actions: ActionTree<CoachState, RootState> = {
   },
   FETCH_ME({ commit }) {
     axios.get("http://localhost:3000/users/me").then((response) => {
-      console.log(response.data);
       commit("FETCH_ME", response.data);
     });
   },

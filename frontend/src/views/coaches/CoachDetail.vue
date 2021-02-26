@@ -34,7 +34,7 @@
 <script lang="ts">
 import { ICoach } from "@/store/modules/coaches/types";
 import { useStore } from "vuex";
-import { computed, onBeforeMount, ref } from "vue";
+import { computed, onBeforeMount, onMounted, reactive, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { defineComponent } from "vue";
 export default defineComponent({
@@ -46,14 +46,25 @@ export default defineComponent({
     const route = useRoute();
     const router = useRouter();
 
-    let selectedCoach: ICoach;
-    onBeforeMount(() => {
-      selectedCoach = store.getters["coaches/coaches"]?.find(
-        (coach: ICoach) => coach._id === props.id
-      );
-      if(!selectedCoach){
-        store.dispatch("")
-      }
+    let selectedCoach = reactive<any>({
+      _id: "",
+      areas: [],
+      description: "",
+      hourlyRate: 0,
+      user: {
+        _id: "",
+        firstName: "",
+        lastName: "",
+        country: "",
+        email: "",
+        role: "",
+      },
+    });
+    onMounted(async () => {
+      const res = await store.dispatch("coaches/FETCH_COACH", props.id);
+      Object.keys(res).forEach((val) => {
+        selectedCoach[val] = res[val];
+      });
     });
     const fullName = computed<string>(
       () => `${selectedCoach.user.firstName} ${selectedCoach.user.lastName}`

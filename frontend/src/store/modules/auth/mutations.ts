@@ -1,7 +1,6 @@
 import { AuthState } from "./types";
 
 import { MutationTree } from "vuex";
-
 export const mutations: MutationTree<AuthState> = {
   AUTH_REQUEST(state) {
     state.status = "loading";

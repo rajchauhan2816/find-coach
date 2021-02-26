@@ -37,7 +37,7 @@ export class CoachesService {
   }
 
   findOne(id: string) {
-    return `This action returns all coaches`;
+    return this.coachModel.findById(id);
   }
 
   update(updateCoachDto: UpdateCoachDto) {

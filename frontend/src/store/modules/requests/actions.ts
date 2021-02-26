@@ -1,21 +1,32 @@
 import { RootState } from "./../../index";
 import { RequestState } from "./types";
 import { ActionTree } from "vuex";
+import { axios } from "@/utils/axios";
+import { SERVER } from "@/utils/url";
+
 
 interface IFormData {
   coachId: string;
-  email: string;
   message: string;
 }
 
 export const actions: ActionTree<RequestState, RootState> = {
   contactCoach({ commit }, payload: IFormData) {
     const newRequest = {
-      id: new Date().toISOString(),
+      text: payload.message,
       coachId: payload.coachId,
-      userEmail: payload.email,
-      message: payload.message,
     };
-    commit("addRequest", newRequest);
+    axios({
+      url: SERVER.url + "/requests",
+      data: newRequest,
+      method: "POST",
+    })
+      .then((resp) => {
+        console.log(resp.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    //commit("addRequest", newRequest);
   },
 };
