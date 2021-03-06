@@ -8,7 +8,7 @@
         <RequestItem
           v-for="req in receivedRequests"
           :key="req._id"
-          :email="isCoach ? req.from.email : req.to.user.email"
+          :email="displayEmail(req)"
           :message="req.message"
         ></RequestItem>
       </ul>
@@ -30,17 +30,24 @@ export default defineComponent({
   },
   setup() {
     let email = ref();
+
+    function displayEmail(req: any) {
+      console.log(req);
+      return isCoach.value ? req.from.email : req.to?.user?.email;
+    }
+
     const store = useStore();
     const isCoach = computed<Boolean>(() => {
       return store.getters["coaches/isCoach"];
     });
     const receivedRequests = computed<IRequest[]>(() => {
+      console.log(receivedRequests);
       return store.getters["requests/requests"];
     });
     const hasRequests = computed<boolean>(() => {
       return store.getters["requests/hasRequests"];
     });
-    return { receivedRequests, hasRequests, isCoach };
+    return { receivedRequests, hasRequests, isCoach, displayEmail };
   },
   beforeRouteEnter() {
     console.log("object");

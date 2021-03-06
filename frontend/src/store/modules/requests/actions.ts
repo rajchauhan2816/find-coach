@@ -14,7 +14,7 @@ export const actions: ActionTree<RequestState, RootState> = {
   contactCoach({ commit }, payload: IFormData) {
     const newRequest = {
       text: payload.message,
-      coachId: payload.coachId,
+      coachUserId: payload.coachId,
     };
     axios({
       url: SERVER.url + "/requests",
