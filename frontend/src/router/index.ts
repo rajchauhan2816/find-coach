@@ -7,14 +7,33 @@ import RequestReceived from "../views/requests/RequestReceived.vue";
 import NotFound from "../views/NotFound.vue";
 import LogIn from "../views/Auth/LogIn.vue";
 import SignUp from "../views/Auth/SignUp.vue";
+import store from "@/store/index";
+
+function guardMyroute(
+  _: any,
+  _2: any,
+  next: any,
+) {
+  const isAuthenticated = store.getters["isAuthenticated"];
+  //this is just an example. You will have to find a better or
+  // centralised way to handle you localstorage data handling
+  if (isAuthenticated) {
+    next(); // allow to enter route
+  } else {
+    next("/auth/login"); // go to '/login';
+  }
+}
+
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    redirect: "/auth/login",
+    redirect: "/coaches",
+    beforeEnter: guardMyroute,
   },
   {
     path: "/coaches",
     component: CoachesList,
+    beforeEnter: guardMyroute,
   },
   {
     path: "/coaches/:id",
@@ -26,10 +45,12 @@ const routes: Array<RouteRecordRaw> = [
         component: ContactCoach,
       },
     ],
+    beforeEnter: guardMyroute,
   },
   {
     path: "/register",
     component: CoachRegistration,
+    beforeEnter: guardMyroute,
   },
   {
     path: "/auth/login",
@@ -42,6 +63,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/requests",
     component: RequestReceived,
+    beforeEnter: guardMyroute,
   },
   {
     path: "/:notFound(.*)",

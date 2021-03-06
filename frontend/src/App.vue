@@ -4,12 +4,14 @@
 </template>
 
 <script>
-import TheHeader from "./components/layout/TheHeader.vue"
+import TheHeader from "./components/layout/TheHeader.vue";
+import BaseButton from "./components/ui/BaseButton.vue";
 export default {
   components: {
-    TheHeader
-  }
-}
+    TheHeader,
+    BaseButton,
+  },
+};
 </script>
 
 <style>

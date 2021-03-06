@@ -1,21 +1,21 @@
-import { ICurrentUser } from './../auth/currentuser';
-import { JwtAuthGuard } from './../auth/jwt-auth.guard';
+import { ICurrentUser } from "./../auth/currentuser";
+import { JwtAuthGuard } from "./../auth/jwt-auth.guard";
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Put,
-  Param,
+  Controller,
   Delete,
-} from '@nestjs/common';
-import { CoachesService } from './coaches.service';
-import { CreateCoachDto } from './dto/create-coach.dto';
-import { UpdateCoachDto } from './dto/update-coach.dto';
-import { UseGuards } from '@nestjs/common';
-import { User } from 'src/auth/user.decorator';
+  Get,
+  Param,
+  Post,
+  Put,
+} from "@nestjs/common";
+import { CoachesService } from "./coaches.service";
+import { CreateCoachDto } from "./dto/create-coach.dto";
+import { UpdateCoachDto } from "./dto/update-coach.dto";
+import { UseGuards } from "@nestjs/common";
+import { User } from "src/auth/user.decorator";
 
-@Controller('coaches')
+@Controller("coaches")
 export class CoachesController {
   constructor(private readonly coachesService: CoachesService) {}
 
@@ -25,14 +25,20 @@ export class CoachesController {
     return this.coachesService.create(user, createCoachDto);
   }
 
-  @Get()
+  @Get("/all")
   findAll() {
     return this.coachesService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
+  @Get(":id")
+  findOne(@Param("id") id: string) {
     return this.coachesService.findOne(id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get()
+  findOneByUser(@User() user: ICurrentUser) {
+    return this.coachesService.findOneByUser(user);
   }
 
   @Put()
@@ -40,8 +46,8 @@ export class CoachesController {
     return this.coachesService.update(updateCoachDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
+  @Delete(":id")
+  remove(@Param("id") id: string) {
     return this.coachesService.remove(+id);
   }
 }

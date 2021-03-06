@@ -3,13 +3,38 @@
     <nav>
       <h1><router-link to="/">Find a Coach</router-link></h1>
       <ul>
-        <li><router-link to="/coaches">All Coaches</router-link></li>
-        <li><router-link to="/requests">Requests</router-link></li>
+        <li>
+          <router-link to="/coaches" v-if="isAuth">All Coaches</router-link>
+        </li>
+        <li>
+          <router-link to="/requests" v-if="isAuth">Requests</router-link>
+        </li>
       </ul>
+      <base-button @click="logout" v-if="isAuth">Logout</base-button>
     </nav>
   </header>
 </template>
+<script lang="ts">
+import { useStore } from "vuex";
+import Vue, { computed, defineComponent, ref } from "vue";
+import { useRouter } from "vue-router";
+export default defineComponent({
+  setup() {
+    const store = useStore();
+    const router = useRouter();
 
+    const isAuth = computed<string>(() => {
+      return store.getters["isAuthenticated"];
+    });
+
+    function logout() {
+      store.dispatch("AUTH_LOGOUT");
+      router.push("/auth/login");
+    }
+    return { logout, isAuth };
+  },
+});
+</script>
 <style scoped>
 header {
   width: 100%;

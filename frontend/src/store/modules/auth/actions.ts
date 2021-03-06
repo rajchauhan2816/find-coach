@@ -1,3 +1,4 @@
+import router from "@/router";
 import { RootState } from "./../../index";
 import { AuthState } from "./types";
 import { ActionTree } from "vuex";
@@ -10,7 +11,6 @@ interface IFormData {
 
 export const actions: ActionTree<AuthState, RootState> = {
   AUTH_REQUEST({ commit, dispatch }, user: IFormData) {
-
     commit("AUTH_REQUEST");
     axios({
       url: "http://localhost:3000/auth/login",
@@ -18,12 +18,12 @@ export const actions: ActionTree<AuthState, RootState> = {
       method: "POST",
     })
       .then((resp) => {
-
         const token = resp.data.access_token;
         localStorage.setItem("user-token", token); // store the token in localstorage
         commit("AUTH_SUCCESS", token);
         set_acess_token(token);
-        dispatch("coaches/FETCH_ME")
+        router.push("/coaches");
+        dispatch("coaches/FETCH_ME");
       })
       .catch((err) => {
         commit("AUTH_ERROR", err);

@@ -32,7 +32,6 @@ export default defineComponent({
         username: email.value,
         password: password.value,
       });
-      router.push("/coaches");
     }
     return { email, password, submitForm };
   },

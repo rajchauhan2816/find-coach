@@ -1,14 +1,24 @@
-import { Coach } from './../../coaches/schemas/coach.schema';
-import { User } from '../../users/schemas/user.schema';
-import { Document, Types } from 'mongoose';
-import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
+import { Coach } from "./../../coaches/schemas/coach.schema";
+import { User } from "../../users/schemas/user.schema";
+import { Document, Types } from "mongoose";
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 
 @Schema()
 export class Request extends Document {
-  @Prop({ required: true, type: Types.ObjectId })
+  @Prop({
+    required: true,
+    type: Types.ObjectId,
+    ref: "user",
+    autopopulate: true,
+  })
   from: User;
 
-  @Prop({ required: true, type: Types.ObjectId })
+  @Prop({
+    required: true,
+    type: Types.ObjectId,
+    ref: "coach",
+    autopopulate: true,
+  })
   to: Coach;
 
   @Prop({ required: true })

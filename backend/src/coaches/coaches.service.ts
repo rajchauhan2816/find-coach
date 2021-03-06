@@ -1,18 +1,18 @@
-import { AlreadyCoachException } from './../exceptions/already-coach.exception';
-import { InjectModel } from '@nestjs/mongoose';
-import { Coach } from './schemas/coach.schema';
-import { Model } from 'mongoose';
-import { Injectable } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
-import { CreateCoachDto } from './dto/create-coach.dto';
-import { UpdateCoachDto } from './dto/update-coach.dto';
+import { AlreadyCoachException } from "./../exceptions/already-coach.exception";
+import { InjectModel } from "@nestjs/mongoose";
+import { Coach } from "./schemas/coach.schema";
+import { Model, Types } from "mongoose";
+import { Injectable } from "@nestjs/common";
+import { UsersService } from "../users/users.service";
+import { CreateCoachDto } from "./dto/create-coach.dto";
+import { UpdateCoachDto } from "./dto/update-coach.dto";
 
 @Injectable()
 export class CoachesService {
   constructor(
     private usersService: UsersService,
-    @InjectModel('coach') private coachModel: Model<Coach>,
-  ) { }
+    @InjectModel("coach") private coachModel: Model<Coach>,
+  ) {}
   async create({ email }: { email: string }, createCoachDto: CreateCoachDto) {
     try {
       const user = await this.usersService.findOne(email);
@@ -38,6 +38,11 @@ export class CoachesService {
 
   findOne(id: string) {
     return this.coachModel.findById(id);
+  }
+
+  async findOneByUser({ email }: { email: string }) {
+    const user = await this.usersService.findOne(email);
+    return this.coachModel.findOne({ user: user._id });
   }
 
   update(updateCoachDto: UpdateCoachDto) {

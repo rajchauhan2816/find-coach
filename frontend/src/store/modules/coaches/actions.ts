@@ -21,16 +21,18 @@ interface Coach {
 
 export const actions: ActionTree<CoachState, RootState> = {
   FETCH_COACHES({ commit }) {
-    axios.get("http://localhost:3000/coaches/").then((response) => {
+    axios.get("/coaches/all").then((response) => {
       commit("FETCH_COACHES", response.data);
     });
   },
   async FETCH_COACH({ state }, id: string) {
-    let coach = state.coaches.find(coach => coach._id === id);
+    let coach = state.coaches.find((coach) => coach._id === id);
     if (!coach) {
-      return axios.get(`http://localhost:3000/coaches/${id}`).then((response) => {
-        return response.data;
-      });
+      return axios.get(`/coaches/${id}`).then(
+        (response) => {
+          return response.data;
+        },
+      );
     }
     return coach;
   },

@@ -7,8 +7,8 @@
       <ul v-if="hasRequests">
         <RequestItem
           v-for="req in receivedRequests"
-          :key="req.id"
-          :email="req.userEmail"
+          :key="req._id"
+          :email="isCoach ? req.from.email : req.to.user.email"
           :message="req.message"
         ></RequestItem>
       </ul>
@@ -19,8 +19,9 @@
 
 <script lang="ts">
 import { useStore } from "vuex";
+import store from "@/store/index";
 import { IRequest } from "@/store/modules/requests/types";
-import { computed, defineComponent } from "vue";
+import { computed, defineComponent, ref } from "vue";
 import RequestItem from "@/components/requests/RequestItem.vue";
 
 export default defineComponent({
@@ -28,14 +29,22 @@ export default defineComponent({
     RequestItem,
   },
   setup() {
+    let email = ref();
     const store = useStore();
+    const isCoach = computed<Boolean>(() => {
+      return store.getters["coaches/isCoach"];
+    });
     const receivedRequests = computed<IRequest[]>(() => {
       return store.getters["requests/requests"];
     });
     const hasRequests = computed<boolean>(() => {
       return store.getters["requests/hasRequests"];
     });
-    return { receivedRequests, hasRequests };
+    return { receivedRequests, hasRequests, isCoach };
+  },
+  beforeRouteEnter() {
+    console.log("object");
+    store.dispatch("requests/fetchRequest");
   },
 });
 </script>
